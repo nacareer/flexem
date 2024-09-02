@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>画像からテキストを認識</title>
+	<title>数字のみ認識</title>
 	<script src="https://cdn.jsdelivr.net/npm/tesseract.js@2.1.1/dist/tesseract.min.js"></script>
 	<style>
 		body {
@@ -21,10 +21,10 @@
 	</style>
 </head>
 <body>
-	<h1>画像からテキストを認識</h1>
+	<h1>画像から数字を認識</h1>
 	<input type="file" id="fileInput" accept="image/*">
 	<img id="imagePreview" alt="Image Preview" />
-	<button id="processButton">テキストを認識</button>
+	<button id="processButton">数字を認識</button>
 	<div id="result"></div>
 
 	<script>
@@ -42,9 +42,12 @@
 			if (image) {
 				Tesseract.recognize(
 					image,
-					'jpn', // 日本語の場合。英語の場合は 'eng' を指定
+					'eng', // 必要に応じて言語を指定
 					{
-						logger: info => console.log(info) // ログをコンソールに表示
+						logger: info => console.log(info),
+						tessedit_char_whitelist: '0123456789', // 数字のみを認識
+						psm: 6, // OCR Engine Modeを指定（ページ分割モード）
+						oem: 1  // OCR Engine Modeを指定（LSTMのみ）
 					}
 				).then(({ data: { text } }) => {
 					document.getElementById('result').innerText = text;
