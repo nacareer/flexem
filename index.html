@@ -50,11 +50,11 @@ function filterText(text) {
 					'jpn', // 必要に応じて言語を指定
 					{
 						logger: info => console.log(info),
-						const filteredText = filterText(text);
 						psm: 6, // OCR Engine Modeを指定（ページ分割モード）
 						oem: 1  // OCR Engine Modeを指定（LSTMのみ）
 					}
 				).then(({ data: { text } }) => {
+					const filteredText = filterText(text);
 					document.getElementById('result').innerText = text;
 				}).catch(error => {
 					document.getElementById('result').innerText = `エラー: ${error.message}`;
