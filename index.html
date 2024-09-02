@@ -39,13 +39,18 @@
 
 		document.getElementById('processButton').addEventListener('click', function() {
 			const image = document.getElementById('imagePreview').src;
+							const whitelist = /^[0-9あ-んア-ン速度増加最大装弾数]+$/;
+function filterText(text) {
+    return text.split('\n').filter(line => whitelist.test(line)).join('\n');
+}
+
 			if (image) {
 				Tesseract.recognize(
 					image,
 					'jpn', // 必要に応じて言語を指定
 					{
 						logger: info => console.log(info),
-						tessedit_char_whitelist: 'チャージダメジ速度最大装弾数増加0123456789', // 数字のみを認識
+						const filteredText = filterText(text);
 						psm: 6, // OCR Engine Modeを指定（ページ分割モード）
 						oem: 1  // OCR Engine Modeを指定（LSTMのみ）
 					}
