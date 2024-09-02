@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>画像からテキストを認識</title>
+	<script src="https://cdn.jsdelivr.net/npm/tesseract.js@2.1.1/dist/tesseract.min.js"></script>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			padding: 20px;
+		}
+		#imagePreview {
+			max-width: 500px;
+			margin-bottom: 20px;
+		}
+		#result {
+			white-space: pre-wrap;
+			margin-top: 20px;
+		}
+	</style>
+</head>
+<body>
+	<h1>画像からテキストを認識</h1>
+	<input type="file" id="fileInput" accept="image/*">
+	<img id="imagePreview" alt="Image Preview" />
+	<button id="processButton">テキストを認識</button>
+	<div id="result"></div>
+
+	<script>
+		document.getElementById('fileInput').addEventListener('change', function(event) {
+			const file = event.target.files[0];
+			const reader = new FileReader();
+			reader.onload = function(e) {
+				document.getElementById('imagePreview').src = e.target.result;
+			};
+			reader.readAsDataURL(file);
+		});
+
+		document.getElementById('processButton').addEventListener('click', function() {
+			const image = document.getElementById('imagePreview').src;
+			if (image) {
+				Tesseract.recognize(
+					image,
+					'jpn', // 日本語の場合。英語の場合は 'eng' を指定
+					{
+						logger: info => console.log(info) // ログをコンソールに表示
+					}
+				).then(({ data: { text } }) => {
+					document.getElementById('result').innerText = text;
+				}).catch(error => {
+					document.getElementById('result').innerText = `エラー: ${error.message}`;
+				});
+			} else {
+				document.getElementById('result').innerText = '画像をアップロードしてください。';
+			}
+		});
+	</script>
+</body>
+</html>
