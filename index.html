@@ -1,68 +1,114 @@
 ﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>数字のみ認識</title>
-	<script src="https://cdn.jsdelivr.net/npm/tesseract.js@2.1.1/dist/tesseract.min.js"></script>
-	<style>
-		body {
-			font-family: Arial, sans-serif;
-			padding: 20px;
-		}
-		#imagePreview {
-			max-width: 500px;
-			margin-bottom: 20px;
-		}
-		#result {
-			white-space: pre-wrap;
-			margin-top: 20px;
-		}
-	</style>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>flex</title>
+	<meta name="description" content="Create your build card">
+	<link rel="apple-touch-icon" type="image/png" href="img/apple-touch-icon-180x180.png">
+	<link rel="stylesheet" href="style.css">
+	<link rel="icon" type="image/png" href="img/icon-192x192.png">
+	<link rel="manifest" href="manifest.json">
+	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<h1>画像から数字を認識</h1>
-	<input type="file" id="fileInput" accept="image/*">
-	<img id="imagePreview" alt="Image Preview" />
-	<button id="processButton">数字を認識</button>
-	<div id="result"></div>
+<p id="error">JavaScriptError</p>
+<div id="explain">
+</div>
+<div id="start" class="container hidden"><!---->
+	<h1>flex</h1>
+	<button id="startButton">START</button>
+</div>
+<div id="play" class="container"><!--hidden-->
+	<div id="status">
+		<div class="toggleButton">
+			<input id="toggle" class="toggleInput" type='checkbox' name="mode"/>
+			<label for="toggle" class="toggleLabel"/>
+		</div>
+		<span id="toggleText">Auto display: flex;</span>
+	</div>
+	<div id="boardArea">
+		<div id="board"></div>
+		<div id="arrow"></div>
+		<div id="sample"></div>
+	</div>
+	<div>
+	</div>
+	
+	<div id="controls">
+		<div>
+			<div id="label1" class="label label-disabled"><span>visibility: </span></div>
+			<div class="buttons"><button id="button1" onclick="visible()" disabled>visible;</button></div>
+		</div>
+		<hr>
+		<div>
+			<div id="label2" class="label label-disabled"><span>dispaly: </span></div>
+			<div class="buttons"><button id="button2" onclick="displayFlex()" disabled>flex;</button></div>
+		</div>
+		<hr>
+		<div>
+			<div id="label3" class="label label-disabled"><span>flex-wrap: </span></div>
+			<div class="buttons"><button id="button3" onclick="flexWrap()" disabled>wrap;</button></div>
+		</div>
+		<hr>
+		<div>
+			<div id="label4" class="label labelThick label-disabled"><span>flex-directoin: </span></div>
+			<div class="buttons buttonsThick">
+				<div class="separate">
+					<button class="button4" onclick="setFlexDirection('0')" disabled>row;</button>
+					<button class="button4" onclick="setFlexDirection('1')" disabled>row-reverse;</button>
+				</div>
+				<div class="separate">
+					<button class="button4" onclick="setFlexDirection('2')" disabled>column;</button>
+					<button class="button4" onclick="setFlexDirection('3')" disabled>column-reverse;</button>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<div>
+			<div id="label5" class="label labelThick label-disabled"><span>align-content: </span></div>
+			<div class="buttons buttonsThick">
+				<button class="button5" onclick="setAlignContent('0')" disabled>normal;</button>
+				<button class="button5" onclick="setAlignContent('1')" disabled>start;</button>
+				<button class="button5" onclick="setAlignContent('2')" disabled>center;</button>
+				<button class="button5" onclick="setAlignContent('3')" disabled>end;</button>
+				<button class="button5" onclick="setAlignContent('4')" disabled>space-between;</button>
+				<button class="button5" onclick="setAlignContent('5')" disabled>space-aronund;</button>
+			</div>
+		</div>
+		<hr>
+		<div>
+			<div id="label6" class="label labelThick label-disabled"><span>justify-content: </span></div>
+			<div class="buttons buttonsThick">
+				<button class="button6" onclick="setJustifyContent('0')" disabled>start;</button>
+				<button class="button6" onclick="setJustifyContent('1')" disabled>center;</button>
+				<button class="button6" onclick="setJustifyContent('2')" disabled>end;</button>
+				<button class="button6" onclick="setJustifyContent('3')" disabled>space between;</button>
+				<button class="button6" onclick="setJustifyContent('4')" disabled>space around;</button>
+				<button class="button6" onclick="setJustifyContent('5')" disabled>space evenly;</button>
+			</div>
+		</div>
+		<hr>
+	</div>
+	<div id="command">
+		<button onclick="generateSquares()">Generate</button>
+		<button id="button7" onclick="submit()" disabled>Submit</button>
 
-	<script>
-		document.getElementById('fileInput').addEventListener('change', function(event) {
-			const file = event.target.files[0];
-			const reader = new FileReader();
-			reader.onload = function(e) {
-				document.getElementById('imagePreview').src = e.target.result;
-			};
-			reader.readAsDataURL(file);
-		});
+	</div>
+</div>
 
-		document.getElementById('processButton').addEventListener('click', function() {
-			const image = document.getElementById('imagePreview').src;
-							const whitelist = /^[0-9あ-んア-ン速度増加最大装弾数]+$/;
-function filterText(text) {
-    return text.split('\n').filter(line => whitelist.test(line)).join('\n');
+
+
+<script src="script.js"></script>
+<script>
+// ServiceWorker登録：https://developers.google.com/web/fundamentals/primers/service-workers/?hl=ja
+if ('serviceWorker' in navigator) {
+	navigator.serviceWorker.register('sw.js').then(function(registration) {
+		console.log('ServiceWorker registration successful with scope: ', registration.scope);
+	}).catch(function(err) {
+		console.log('ServiceWorker registration failed: ', err);
+	});
 }
-
-			if (image) {
-				Tesseract.recognize(
-					image,
-					'jpn', // 必要に応じて言語を指定
-					{
-						logger: info => console.log(info),
-						psm: 6, // OCR Engine Modeを指定（ページ分割モード）
-						oem: 1  // OCR Engine Modeを指定（LSTMのみ）
-					}
-				).then(({ data: { text } }) => {
-					const filteredText = filterText(text);
-					document.getElementById('result').innerText = filteredText;
-				}).catch(error => {
-					document.getElementById('result').innerText = `エラー: ${error.message}`;
-				});
-			} else {
-				document.getElementById('result').innerText = '画像をアップロードしてください。';
-			}
-		});
-	</script>
+</script>
 </body>
 </html>
