@@ -6,7 +6,7 @@ document.getElementById('error').style.display = 'none';
 const answer =[0, 0, 0];
 const displayNums =[0, 0, 0];
 
-const flexDirections = ['row', 'row-reverse', 'column', 'column-reverse'];
+const flexDirections = ['row', 'column', 'row-reverse', 'column-reverse'];
 const alignContents = ['normal', 'start', 'center', 'end', 'space-between', 'space-around'];
 const justifyContents = ['start', 'center', 'end', 'space-between', 'space-around', 'space-evenly'];
 
@@ -25,9 +25,14 @@ checkbox.addEventListener('change', function() {
 		}
 });
 
-
+document.getElementById('startButton').addEventListener('click',function() {
+	document.getElementById('start').classList.add('hidden');
+	document.getElementById('play').classList.remove('hidden');
+});
 
 function generateSquares() {
+	document.getElementById('nextButton').disabled = 'disabled';
+	document.getElementById('result').innerHTML = '';
 	for (let i = 1; i < 7; i++) {
 		document.getElementById(`label${i}`).classList.add('label-disabled');
 		if (i < 4) {
@@ -51,8 +56,11 @@ function generateSquares() {
 	const board = document.getElementById('board');
 	sample.innerHTML = '';
 	board.innerHTML = '';
-	board.style.display = boardDisplay[status];
-	board.style.flexWrap = boardWrap[status];
+	board.style.display = 'block';
+	board.style.flexWrap = 'nowrap';
+	board.style.flexDirection = 'row';
+	board.style.alignContent = 'normal';
+	board.style.justifyContent = 'start';
 
 	for (let i = 0; i < sum; i++) {
 		const sampleSquare = document.createElement('div');
@@ -115,6 +123,7 @@ function visible() {
 
 	document.getElementById('label2').classList.remove('label-disabled');
 	document.getElementById('button2').disabled = false;
+	document.getElementById('resetButton').disabled = false;
 	document.getElementById('label1').classList.add('label-disabled');
 	document.getElementById('button1').disabled = 'disabled';
 }
@@ -188,6 +197,43 @@ document.getElementById('button7').disabled = false;
 	});
 }
 
+function reset() {
+	document.getElementById('result').innerHTML = '';
+	for (let i = 1; i < 7; i++) {
+		document.getElementById(`label${i}`).classList.add('label-disabled');
+		if (i < 4) {
+			document.getElementById(`button${i}`).disabled = 'disabled';
+		}else{
+			document.querySelectorAll(`button.button${i}`).forEach(button => {
+				button.disabled = 'disabled';
+			});
+		}
+	}
+	document.getElementById('button7').disabled = 'disabled';
+
+	board.style.display = boardDisplay[status];
+	board.style.flexWrap = boardWrap[status];
+	board.style.flexDirection = 'row';
+	board.style.alignContent = 'normal';
+	board.style.justifyContent = 'start';
+
+
+	if (status == 1){
+		const squares = document.getElementsByClassName('square');
+		const squaresStatus = Array.from(squares).every(content => content.style.visibility === 'hidden');
+		Array.from(squares).forEach(content => {
+			content.style.visibility = squaresStatus ? 'hidden' : 'visible';
+		});
+		document.getElementById('label4').classList.remove('label-disabled');
+		document.querySelectorAll('button.button4').forEach(button => {
+			button.disabled = false;
+		});
+	}else{
+		document.getElementById('label2').classList.remove('label-disabled');
+		document.getElementById('button2').disabled = false;
+	}
+}
+
 function check() {
 	if (answer.length !== displayNums.length) {
 		return false;
@@ -204,8 +250,15 @@ function check() {
 }
 
 function submit() {
+	const resultArea = document.getElementById('result');
 	const result = check();
-	alert(result);
-	genetateSquare();
+	if(result == true) {
+		resultArea.innerHTML = 'CORRECT!';
+		document.getElementById('resetButton').disabled = 'disabled';
+		document.getElementById('nextButton').disabled = false;
+	}else if(result == false) {
+		resultArea.innerHTML = 'WRONG!';
+	}
+	document.getElementById('button7').disabled = 'disabled';
 }
 

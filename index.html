@@ -15,11 +15,11 @@
 <p id="error">JavaScriptError</p>
 <div id="explain">
 </div>
-<div id="start" class="container hidden"><!---->
+<div id="start" class="container"><!---->
 	<h1>flex</h1>
-	<button id="startButton">START</button>
+	<button id="startButton" onclick="generateSquares()">START</button>
 </div>
-<div id="play" class="container"><!--hidden-->
+<div id="play" class="container hidden"><!--hidden-->
 	<div id="status">
 		<div class="toggleButton">
 			<input id="toggle" class="toggleInput" type='checkbox' name="mode"/>
@@ -32,9 +32,10 @@
 		<div id="arrow"></div>
 		<div id="sample"></div>
 	</div>
-	<div>
+	<div id="resultArea">
+		<span>Result:</span>
+		<div id="result"></div>
 	</div>
-	
 	<div id="controls">
 		<div>
 			<div id="label1" class="label label-disabled"><span>visibility: </span></div>
@@ -56,10 +57,10 @@
 			<div class="buttons buttonsThick">
 				<div class="separate">
 					<button class="button4" onclick="setFlexDirection('0')" disabled>row;</button>
-					<button class="button4" onclick="setFlexDirection('1')" disabled>row-reverse;</button>
+					<button class="button4" onclick="setFlexDirection('1')" disabled>column</button>
 				</div>
 				<div class="separate">
-					<button class="button4" onclick="setFlexDirection('2')" disabled>column;</button>
+					<button class="button4" onclick="setFlexDirection('2')" disabled>row-reverse;</button>
 					<button class="button4" onclick="setFlexDirection('3')" disabled>column-reverse;</button>
 				</div>
 			</div>
@@ -89,13 +90,15 @@
 			</div>
 		</div>
 		<hr>
-	</div>
-	<div id="command">
-		<button onclick="generateSquares()">Generate</button>
+		<div id="command">
+		<button id="resetButton" onclick="reset()" disabled>Reset</button>
 		<button id="button7" onclick="submit()" disabled>Submit</button>
+		<button id="nextButton" onclick="generateSquares()" disabled>Next</button>
+	</div>
 
 	</div>
 </div>
+
 
 
 

@@ -20,17 +20,17 @@ body{
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: #fefefe;
+	background-color: #fafafa;
 }
 
 .container {
 	width: 96%;
-	height: 90%;
+	height: 96%;
+	padding: 0 10px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	background-color: #fafafa;
 	overflow: hidden;
 }
 
@@ -46,20 +46,23 @@ button {
 	justify-content: center;
 	text-align: center;
 	font-weight: bold;
+	
 }
 
 #status {
-	width: 100%;
+	width: 370px;
 	display: flex;
-	align-items: left;
 	justify-content: start;
 }
 
 #boardArea {
+	width: auto;
+	height: auto;
+	max-width: 700px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	border: 1px solid rgba(0, 0, 0, .5);
+	border: 1px solid rgba(50, 50, 50, .5);
 	border-radius: 20px;
 }
 
@@ -126,9 +129,22 @@ button {
 	border: 1px solid rgba(0, 0, 0, .5);
 }
 
+#resultArea {
+	width: 150px;
+	height: 18px;
+	display: flex;
+	justify-content: center;
+}
+
+#result {
+	width: 100px;
+	height: 18px;
+	font-weight: bold;
+	color: #ff0000;
+}
+
 #controls {
-padding: 10px;
-	margin-top: 10px;
+	padding: 5px 10px;
 	border: 1px solid rgba(0, 0, 0, 0);
 	border-radius: 10px;
 	background-color: #eee;
@@ -163,11 +179,11 @@ padding: 10px;
 .toggleLabel:after {
 	content: "";
 	position: absolute;
-	width: 16px;
-	height: 16px;
+	width: 15px;
+	height: 15px;
 	border-radius: 100%;
 	left: 1px;
-	top: 1ox;
+	top: 1px;
 	z-index: 2;
 	background: #eee;
 	transition: 0.4s;
@@ -186,7 +202,7 @@ padding: 10px;
 	position: relative;
 	width: 42px;
 	height: 21px;
-	margin: auto;
+	margin: 0 10px;
 }
 
 .label-disabled {
@@ -201,6 +217,7 @@ padding: 10px;
 .label {
 	width: 120px;
 	height: 30px;
+	margin-right: 10px;
 	justify-content: right;
 	text-align: right;
 	align-items: center;
@@ -208,7 +225,7 @@ padding: 10px;
 }
 
 .buttons {
-	width: 260px;
+	width: 220px;
 	height: 30px;
 	display: flex;
 	flex-wrap: wrap;
@@ -225,7 +242,7 @@ padding: 10px;
 }
 
 .separate {
-	width: 260px;
+	width: 220px;
 	height: 30px;
 	display: flex;
 	flex-wrap: wrap;
@@ -233,32 +250,48 @@ padding: 10px;
 }
 
 .buttons button {
-	width: 80px;
+	width: 70px;
 }
 
 #command {
-	width: 200px;
+	width: 340px;
 	height: 30px;
 	display: flex;
+	justify-content: center;
+}
+
+hr {
+	margin: 2px 0;
 }
 
 @media screen and (min-width: 700px) {
 
-.container{
-justify-content: center;
-flex-direction: row;
+#board, #sample {
+	width: 204px;
+	height: 204px;
+	background-size: 40px 40px;
 }
 
-.image-container{
-padding: 20px;
+.square, .sampleSquare {
+	width: 40px;
+	height: 40px;
 }
 
-.content {
-padding-top: 20px;
+.label {
+	height: 30px;
 }
 
-#results{
-margin-top: 20px;
+.buttons {
+	width: 440px;
+	height: 30px;
+}
+
+.separate {
+	width: 196px;
+}
+
+#command {
+	width: 570px;
 }
 
 }
