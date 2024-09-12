@@ -5,11 +5,36 @@ document.getElementById('error').style.display = 'none';
 
 const answer =[0, 0, 0];
 const displayNums =[0, 0, 0];
-
 const flexDirections = ['row', 'column', 'row-reverse', 'column-reverse'];
 const alignContents = ['normal', 'start', 'center', 'end', 'space-between', 'space-around'];
 const justifyContents = ['start', 'center', 'end', 'space-between', 'space-around', 'space-evenly'];
+const score = document.getElementById('score');
+let correctRow = 0;
+let scoreValue = 0;
+let bestScore = 0;
+score.innerHTML = scoreValue;
 
+function updateScore() {
+	if(scoreValue > bestScore) {
+		bestScore = scoreValue;
+		fetch('save_score.php', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application//x-www-form-urlencoded',
+			},
+			body: 'score=' + bestScore
+		});
+	}
+}
+
+window.onload = function() {
+	fetch('get_best_score.php')
+		.then(response => response.json())
+		.then(data => {
+			bestScore = data.bestScore;
+			document.getElementById('bestScore').textContent = bestScore;
+		});
+}
 
 const checkbox = document.querySelector('input[name=mode]');
 const board = document.getElementById('board');
@@ -77,7 +102,10 @@ function generateSquares() {
 	const displayStatus =[];
 	let num = Math.floor(Math.random() * 4);
 	displayNums.splice(0,1,num);
-	if (sum >= 21) {
+	if (sum <=5) {
+		let num = Math.floor(Math.random() * 3) + 1;
+		displayNums.splice(1,1,num);
+	}else if (sum >= 21) {
 		displayNums.splice(1,1,0);
 	}else{
 		let num = Math.floor(Math.random() * 6);
@@ -104,9 +132,13 @@ function generateSquares() {
 		Array.from(squares).forEach(content => {
 			content.style.visibility = squaresStatus ? 'hidden' : 'visible';
 		});
+		board.style.display = 'flex';
+		board.style.flexWrap = 'wrap';
+
 		document.getElementById('label4').classList.remove('label-disabled');
 		document.querySelectorAll('button.button4').forEach(button => {
 			button.disabled = false;
+		document.getElementById('resetButton').disabled = false;
 		});
 	}else{
 		document.getElementById('label1').classList.remove('label-disabled');
@@ -152,7 +184,11 @@ function setFlexDirection(n) {
 	document.getElementById('label5').classList.remove('label-disabled');
 	const button5 = document.querySelectorAll('button.button5');
 	const sampleSquares = document.querySelectorAll('.sampleSquare').length;
-	if (sampleSquares >= 21) {
+	if (sampleSquares <= 5) {
+		for(let i = 1; i < 4; i++) {
+		button5[i].disabled = false;
+		}
+	}else if (sampleSquares >= 21) {
 		button5[0].disabled = false;
 	}else{
 		button5.forEach(button => {
@@ -198,6 +234,9 @@ document.getElementById('button7').disabled = false;
 }
 
 function reset() {
+	correctRow = 0;
+	scoreValue = 0;
+	score.innerHTML = scoreValue;
 	document.getElementById('result').innerHTML = '';
 	for (let i = 1; i < 7; i++) {
 		document.getElementById(`label${i}`).classList.add('label-disabled');
@@ -254,10 +293,22 @@ function submit() {
 	const result = check();
 	if(result == true) {
 		resultArea.innerHTML = 'CORRECT!';
+		resultArea.style.color = '#4bd865';
+		let total = displayNums.reduce(function(a, b){
+			return a + b;
+		},0);
+		const sampleSquares = document.querySelectorAll('.sampleSquare').length;
+		let point = Math.ceil(100 * (1 + (correctRow / 10)) * (1 + (sampleSquares / 100)) * (1 + (total / 10)));
+		scoreValue += point;
+		correctRow++;
+		score.innerHTML = scoreValue;
+		
 		document.getElementById('resetButton').disabled = 'disabled';
 		document.getElementById('nextButton').disabled = false;
 	}else if(result == false) {
 		resultArea.innerHTML = 'WRONG!';
+		resultArea.style.color = '#ff2222';
+
 	}
 	document.getElementById('button7').disabled = 'disabled';
 }

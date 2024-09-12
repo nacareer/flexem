@@ -16,25 +16,39 @@
 <div id="explain">
 </div>
 <div id="start" class="container"><!---->
-	<h1>flex</h1>
+	<h1>FLEX'EM</h1>
+	<div id="headContainer">
+	</div>
 	<button id="startButton" onclick="generateSquares()">START</button>
 </div>
 <div id="play" class="container hidden"><!--hidden-->
 	<div id="status">
-		<div class="toggleButton">
-			<input id="toggle" class="toggleInput" type='checkbox' name="mode"/>
-			<label for="toggle" class="toggleLabel"/>
+		<div id="toggleArea">
+			<div class="toggleButton">
+				<input id="toggle" class="toggleInput" type='checkbox' name="mode"/>
+				<label for="toggle" class="toggleLabel"/>
+			</div>
+			<span id="toggleText">Auto display: flex;</span>
 		</div>
-		<span id="toggleText">Auto display: flex;</span>
+		<div id="bestArea">
+			<span id="bestText">best score:</span>
+			<div id="bestScore">----</div>
+		</div>
 	</div>
 	<div id="boardArea">
 		<div id="board"></div>
 		<div id="arrow"></div>
 		<div id="sample"></div>
 	</div>
-	<div id="resultArea">
-		<span>Result:</span>
+	<div id="info">
+		<div id="resultArea">
+			<span>result:</span>
+		</div>
 		<div id="result"></div>
+		<div id="scoreArea">
+			<span id="scoreText">score:</span>
+			<div id="score"></div>
+		</div>
 	</div>
 	<div id="controls">
 		<div>
@@ -57,7 +71,7 @@
 			<div class="buttons buttonsThick">
 				<div class="separate">
 					<button class="button4" onclick="setFlexDirection('0')" disabled>row;</button>
-					<button class="button4" onclick="setFlexDirection('1')" disabled>column</button>
+					<button class="button4" onclick="setFlexDirection('1')" disabled>column;</button>
 				</div>
 				<div class="separate">
 					<button class="button4" onclick="setFlexDirection('2')" disabled>row-reverse;</button>
