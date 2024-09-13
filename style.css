@@ -7,11 +7,6 @@
 	text-align: center;
 }
 
-/*
-div, p{
-		border: 1px solid rgba(0, 0, 0, .5);
-}*/
-
 body{
 	width: 100vw;
 	height: 100vh;
@@ -48,12 +43,78 @@ button {
 	justify-content: center;
 }
 
-h1 {
-	letter-spacing: 5px;
+#headContainer {
+	width: 288px;
+	height: 42px;
+	margin: 40px auto;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.spell {
+	width: 41px;
+	height: 42px;
+	padding-left: 1px;
+	border: 1px solid rgba(51, 51, 51, .5);
+	border-right: none;
+	background-color: #fff;
+	background-image: linear-gradient(to right, rgba(51,51,51,0.2) 1px, transparent 1px),
+		linear-gradient(to bottom, rgba(51,51,51,0.2) 1px, transparent 1px);
+	background-size: 21px 21px;
+	background-position: -1px -1px;
+	font-size: 38px;
+	font-weight: bold;
+	text-align: center;
+	overflow: hidden;
+}
+
+.spell:nth-child(5) {
+	text-align: start;
+	padding-left: 5px;
+}
+
+.spell:last-child {
+	width: 42px;
+	border-right: 1px solid rgba(51, 51, 51, .5);
+}
+
+#titleScoreArea {
+	margin: 5px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#titleScore {
+	min-width: 32px;
+	margin: 0 5px;
+	text-align: end;
+	align-items: center;
 }
 
 #startButton {
-	
+	width: 150px;
+	height: 40px;
+	margin: 10px;
+	text-align: center;
+	vertical-align: middle;
+	background-color: #4bd865;
+	border: 2px solid #4bd865;
+	color: #fff;
+	letter-spacing: 1px;
+}
+
+#titleToggle {
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	padding-right: 20px;
+}
+
+#practiceText {
+	font-size: 14px;
+	align-items: center;
 }
 
 #status {
@@ -143,7 +204,6 @@ h1 {
 	align-items: center;
 }
 
-
 #boardArea {
 	width: auto;
 	height: auto;
@@ -152,7 +212,7 @@ h1 {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	border: 1px solid rgba(20, 20, 20, .5);
+	border: 1px solid rgba(51, 51, 51, .5);
 	border-radius: 20px;
 }
 
@@ -161,12 +221,13 @@ h1 {
 	height: 154px;
 	margin: 18px;
 	margin-right: 5px;
-	border: 2px solid #000;
+	border: 2px solid rgba(51,51,51,1.0);
 	border-radius: 5px;
 	background-color: #fff;
-	background-image: linear-gradient(to right, rgba(0,0,0,0.2) 1px, transparent 1px),
+	background-image: linear-gradient(to right, rgba(20,20,20,0.2) 1px, transparent 1px),
 		linear-gradient(to bottom, rgba(20,20,20,0.2) 1px, transparent 1px);
 	background-size: 30px 30px;
+	background-position: -0.5px -0.5px;
 	overflow: hidden;
 }
 
@@ -208,7 +269,7 @@ h1 {
 	margin: 0px;
 	align-content: center;
 	visibility: hidden;
-	border: 1px solid rgba(20, 20, 20, .5);
+	border: 1px solid rgba(51, 51, 51, .5);
 }
 
 .sampleSquare {
@@ -217,7 +278,7 @@ h1 {
 	background-color: #eee;
 	margin: 0px;
 	align-content: center;
-	border: 1px solid rgba(20, 20, 20, .5);
+	border: 1px solid rgba(51, 51, 51, .5);
 }
 
 #info {
@@ -241,7 +302,7 @@ h1 {
 	height: 22px;
 	font-size: 1.2em;
 	font-weight: bold;
-	border-bottom: 1px solid rgba(20, 20, 20, .5);
+	border-bottom: 1px solid rgba(51, 51, 51, .5);
 }
 
 #scoreArea {
@@ -264,7 +325,7 @@ h1 {
 
 #controls {
 	padding: 5px 10px;
-	border: 1px solid rgba(20, 20, 20, 0);
+	border: 1px solid rgba(51, 51, 51, 0);
 	border-radius: 10px;
 	background-color: #eee;
 }

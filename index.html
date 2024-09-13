@@ -3,23 +3,39 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	<title>flex</title>
-	<meta name="description" content="Create your build card">
+	<title>FLEXEM</title>
+	<meta name="description" content="Practice display flex for css">
 	<link rel="apple-touch-icon" type="image/png" href="img/apple-touch-icon-180x180.png">
-	<link rel="stylesheet" href="style.css">
 	<link rel="icon" type="image/png" href="img/icon-192x192.png">
+	<link rel="stylesheet" href="style.css">
 	<link rel="manifest" href="manifest.json">
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<p id="error">JavaScriptError</p>
 <div id="explain">
 </div>
-<div id="start" class="container"><!---->
-	<h1>FLEX'EM</h1>
+<div id="start" class="container">
 	<div id="headContainer">
+		<div class="spell">F</div>
+		<div class="spell">L</div>
+		<div class="spell">E</div>
+		<div class="spell">X</div>
+		<div class="spell">'</div>
+		<div class="spell">E</div>
+		<div class="spell">M</div>
+	</div>
+	<div id="titleScoreArea">
+		<span>best score:</span>
+		<div id="titleScore"></div>
 	</div>
 	<button id="startButton" onclick="generateSquares()">START</button>
+	<div id="titleToggle">
+		<div class="toggleButton">
+			<input id="practiceToggle" class="toggleInput" type='checkbox' name="practice"/>
+			<label for="practiceToggle" class="toggleLabel"/>
+		</div>
+		<span id="practiceText">practice mode</span>
+	</div>
 </div>
 <div id="play" class="container hidden"><!--hidden-->
 	<div id="status">
@@ -32,7 +48,7 @@
 		</div>
 		<div id="bestArea">
 			<span id="bestText">best score:</span>
-			<div id="bestScore">----</div>
+			<div id="bestScore"></div>
 		</div>
 	</div>
 	<div id="boardArea">
@@ -112,10 +128,6 @@
 
 	</div>
 </div>
-
-
-
-
 <script src="script.js"></script>
 <script>
 // ServiceWorker登録：https://developers.google.com/web/fundamentals/primers/service-workers/?hl=ja

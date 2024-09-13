@@ -1,29 +1,31 @@
 ﻿let vh = window.innerHeight * 0.01;
 document.documentElement.style.setProperty('--vh', `${vh}px`);
 
-document.getElementById('error').style.display = 'none';
-
 const answer =[0, 0, 0];
 const displayNums =[0, 0, 0];
 const flexDirections = ['row', 'column', 'row-reverse', 'column-reverse'];
 const alignContents = ['normal', 'start', 'center', 'end', 'space-between', 'space-around'];
 const justifyContents = ['start', 'center', 'end', 'space-between', 'space-around', 'space-evenly'];
 const score = document.getElementById('score');
+const bestScore = document.getElementById('bestScore');
+const titleScore = document.getElementById('titleScore');
 let correctRow = 0;
 let scoreValue = 0;
-let bestScore = 0;
+let bestScoreValue = loadScore();
 score.innerHTML = scoreValue;
+bestScore.innerHTML = bestScoreValue;
+titleScore.innerHTML = bestScoreValue;
 
-function updateScore() {
-	if(scoreValue > bestScore) {
-		bestScore = scoreValue;
-		fetch('save_score.php', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application//x-www-form-urlencoded',
-			},
-			body: 'score=' + bestScore
-		});
+function saveScore() {
+	localStorage.setItem('best_score', bestScoreValue);
+}
+
+function loadScore() {
+	const storageScore = localStorage.getItem('best_score');
+	if(storageScore !== null) {
+		return storageScore;
+	}else{
+		return 0;
 	}
 }
 
@@ -31,18 +33,20 @@ window.onload = function() {
 	fetch('get_best_score.php')
 		.then(response => response.json())
 		.then(data => {
-			bestScore = data.bestScore;
-			document.getElementById('bestScore').textContent = bestScore;
+			bestScoreValue = data.bestScoreValue;
+			bestScore.textContent = bestScoreValue;
 		});
 }
 
-const checkbox = document.querySelector('input[name=mode]');
+const checkbox1 = document.querySelector('input[name=mode]');
+const checkbox2 = document.querySelector('input[name=practice]');
 const board = document.getElementById('board');
 const boardVisibility = ['hidden', 'visible'];
 const boardDisplay = ['block', 'flex'];
 const boardWrap = ['nowrap', 'wrap'];
 let status = 0;
-checkbox.addEventListener('change', function() {
+let practice = 0;
+checkbox1.addEventListener('change', function() {
 	if(this.checked) {
 		status = 1;
 		}else{
@@ -50,10 +54,35 @@ checkbox.addEventListener('change', function() {
 		}
 });
 
+checkbox2.addEventListener('change', function() {
+	if(this.checked) {
+		practice = 1;
+		}else{
+		practice = 0;
+		}
+});
+
 document.getElementById('startButton').addEventListener('click',function() {
 	document.getElementById('start').classList.add('hidden');
 	document.getElementById('play').classList.remove('hidden');
 });
+
+function practiceMode() {
+	if(practice == 1){
+		document.getElementById('nextButton').disabled = false;
+		document.getElementById('button7').disabled = false;
+		for (let i = 1; i < 7; i++) {
+			document.getElementById(`label${i}`).classList.remove('label-disabled');
+			if (i < 4) {
+				document.getElementById(`button${i}`).disabled = false;
+			}else{
+				document.querySelectorAll(`button.button${i}`).forEach(button => {
+					button.disabled = false;
+				});
+			}
+		}
+	}
+}
 
 function generateSquares() {
 	document.getElementById('nextButton').disabled = 'disabled';
@@ -144,6 +173,7 @@ function generateSquares() {
 		document.getElementById('label1').classList.remove('label-disabled');
 		document.getElementById('button1').disabled = false;
 	}
+	practiceMode();
 }
 
 function visible() {
@@ -158,6 +188,7 @@ function visible() {
 	document.getElementById('resetButton').disabled = false;
 	document.getElementById('label1').classList.add('label-disabled');
 	document.getElementById('button1').disabled = 'disabled';
+	practiceMode();
 }
 
 function displayFlex() {
@@ -166,6 +197,7 @@ function displayFlex() {
 	document.getElementById('button3').disabled = false;
 	document.getElementById('label2').classList.add('label-disabled');
 	document.getElementById('button2').disabled = 'disabled';
+	practiceMode();
 }
 
 function flexWrap() {
@@ -176,6 +208,7 @@ function flexWrap() {
 	});
 	document.getElementById('label3').classList.add('label-disabled');
 	document.getElementById('button3').disabled = 'disabled';
+	practiceMode();
 }
 
 function setFlexDirection(n) {
@@ -199,7 +232,9 @@ function setFlexDirection(n) {
 	document.querySelectorAll('button.button4').forEach(button => {
 		button.disabled = 'disabled';
 	});
+	practiceMode();
 }
+
 function setAlignContent(n) {
 	document.getElementById('board').style.alignContent = alignContents[n];
 	answer.splice(1,1,n);
@@ -221,6 +256,7 @@ function setAlignContent(n) {
 	document.querySelectorAll('button.button5').forEach(button => {
 		button.disabled = 'disabled';
 	});
+	practiceMode();
 }
 
 function setJustifyContent(n) {
@@ -231,6 +267,7 @@ document.getElementById('button7').disabled = false;
 	document.querySelectorAll('button.button6').forEach(button => {
 		button.disabled = 'disabled';
 	});
+	practiceMode();
 }
 
 function reset() {
@@ -271,6 +308,7 @@ function reset() {
 		document.getElementById('label2').classList.remove('label-disabled');
 		document.getElementById('button2').disabled = false;
 	}
+	practiceMode();
 }
 
 function check() {
@@ -294,21 +332,27 @@ function submit() {
 	if(result == true) {
 		resultArea.innerHTML = 'CORRECT!';
 		resultArea.style.color = '#4bd865';
-		let total = displayNums.reduce(function(a, b){
-			return a + b;
-		},0);
-		const sampleSquares = document.querySelectorAll('.sampleSquare').length;
-		let point = Math.ceil(100 * (1 + (correctRow / 10)) * (1 + (sampleSquares / 100)) * (1 + (total / 10)));
-		scoreValue += point;
-		correctRow++;
-		score.innerHTML = scoreValue;
+		if(practice == 0){
+			let total = displayNums.reduce(function(a, b){
+				return a + b;
+			},0);
+			const sampleSquares = document.querySelectorAll('.sampleSquare').length;
+			let point = Math.ceil(100 * (1 + (correctRow / 10)) * (1 + (sampleSquares / 100)) * (1 + (total / 10)));
+			scoreValue += point;
+			correctRow++;
+			score.innerHTML = scoreValue;
+			if(scoreValue > bestScoreValue) {
+				bestScoreValue = scoreValue;
+				bestScore.innerHTML = bestScoreValue;
+				saveScore();
+			}
+		}
 		
 		document.getElementById('resetButton').disabled = 'disabled';
 		document.getElementById('nextButton').disabled = false;
 	}else if(result == false) {
 		resultArea.innerHTML = 'WRONG!';
 		resultArea.style.color = '#ff2222';
-
 	}
 	document.getElementById('button7').disabled = 'disabled';
 }
