@@ -1,7 +1,7 @@
 {
 	"name":				"Flexem",
 	"short_name":		"Flexem",
-	"description":		"Practice display flex for css",
+	"description":		"A simple web game to practice Flexbox of css",
 	"start_url":		"/index.html",
 	"display":			"standalone",
 	"orientation":		"any",

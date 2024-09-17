@@ -1,6 +1,12 @@
 ﻿let vh = window.innerHeight * 0.01;
 document.documentElement.style.setProperty('--vh', `${vh}px`);
 
+document.addEventListener('touchmove', function(event) {
+	if (event.scale !== 1) {
+		event.preventDefault();
+	}
+}, { passive: false });
+
 const answer =[0, 0, 0];
 const displayNums =[0, 0, 0];
 const flexDirections = ['row', 'column', 'row-reverse', 'column-reverse'];
